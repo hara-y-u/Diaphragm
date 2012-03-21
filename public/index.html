@@ -3,12 +3,16 @@
   <head>
     <meta charset="UTF-8">
     </meta>
-    <title>Ajax EOW</title>
-    <script src="jquery-1.7.1.js"></script>
-    <script src="ig.js"></script>
+    <title>An Instagram App</title>
+    <link rel="stylesheet" href="css/main.css"/>
+    <script src="/application.js"></script>
+    <script>
+      $(function() {
+        var App = require("app");
+        App.init();
+      });
+    </script>
   </head>
   <body>
-    <input type="text"></input>
-    <div id="definitions"></div>
   </body>
 </html>

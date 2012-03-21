@@ -5,6 +5,7 @@
     "coffee-script": "~1.2.0",
     "stitch": "~0.3.3",
     "express": "~2.5.8",
-    "eco": "1.1.0-rc-3"
+    "eco": "~1.1.0-rc-3",
+    "stylus": "~0.24.0"
   }
 }
