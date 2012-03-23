@@ -1,15 +1,23 @@
 utils = require 'lib/utils'
 confs = require 'confs'
-#ModelsGenerator = require 'models/models_generator'
+router = new (require 'router')()
 pageController = new (require 'controllers/PageController')()
+history = window.history
 root = exports ? this
+
+router.add '/', pageController.index
+router.add '/user/:id', pageController.user
 
 module.exports = App =
   init: ->
-    url = utils.parseURL location.href
-    App.route url.path, url.params, url.hash
+    router.route location.href
+    history.replaceState {}, document.title, location.href
 
-  route: (path, params, hash) ->
-    console.log path, params, hash, root
-    switch path
-      when "/" then pageController.index params
+    $('a').live 'click', (ev) ->
+      router.route ev.target.href #modify title here?
+      history.pushState {}, document.title, ev.target.href
+      ev.preventDefault()
+      false
+
+    $(window).on 'popstate', (ev) ->
+      router.route ev.target.href
