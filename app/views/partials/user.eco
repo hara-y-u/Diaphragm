@@ -1,6 +1,0 @@
-<span class="username"><%= @username %></span>
-<span class="full-name"><%= @full_name %></span>
-<span class="bio"><%= @bio %></span>
-<a class="website" href="<%= @website %>"><%= @website %></a>
-<a class="user-page" href="<%= "/user/#{@id}" %>">User's Page</a>
-<img src="<%= @profile_picture %>"/>

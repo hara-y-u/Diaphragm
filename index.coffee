@@ -1,25 +1,40 @@
-require("coffee-script")
-stitch  = require("stitch")
-express = require("express")
+require('coffee-script')
+fs = require('fs')
+stitch  = require('stitch')
+express = require('express')
 argv    = process.argv.slice(2)
+
+stitch.compilers.jade = (module, filename) ->
+  jade = require 'jade'
+  source = jade.compile fs.readFileSync(filename, 'utf8'),
+    compileDebug: false
+    client: true
+    filename: __dirname + '/view-partials/file'
+  content = 'module.exports =' + source + ';'
+  module._compile content, filename
 
 package = stitch.createPackage(
   # Stitchに自動的に結合して欲しいパスを指定する
-  paths: [ __dirname + "/app" ]
+  paths: [
+    __dirname + '/app'
+  ]
 
   # ベースとなるライブラリを指定する
   dependencies: [
     __dirname + '/lib/jquery-1.7.1.js'
+    __dirname + '/lib/runtime.min.js' #jade runtime for client
   ]
 )
+
 app = express.createServer()
 
 app.configure ->
-  app.set "views", __dirname + "/views"
-  app.use app.router
+  app.set 'views', __dirname + '/views'
+  app.set 'view engine', 'jade'
   app.use require('stylus').middleware( src: __dirname + '/public' )
-  app.use express.static(__dirname + "/public")
-  app.get "/application.js", package.createServer()
+  app.use app.router
+  app.use express.static(__dirname + '/public')
+  app.get '/application.js', package.createServer()
 
 port = argv[0] or process.env.PORT or 9294
 console.log "Starting server on port: #{port}"

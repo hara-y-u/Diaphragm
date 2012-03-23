@@ -1,0 +1,7 @@
+each medium in media
+  .media(id='media-liked-#{medium.id}')
+    img(src= medium.images.standard_resolution.url)
+    .media-detail
+      .user
+        user = medium.user
+        include user
