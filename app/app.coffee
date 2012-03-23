@@ -11,13 +11,17 @@ router.add '/user/:id', pageController.user
 module.exports = App =
   init: ->
     router.route location.href
-    history.replaceState {}, document.title, location.href
+    history.replaceState
+      url: location.href
+      document.title, location.href
 
     $('a').live 'click', (ev) ->
       router.route ev.target.href #modify title here?
-      history.pushState {}, document.title, ev.target.href
+      history.pushState
+        url: ev.target.href
+        document.title, ev.target.href
       ev.preventDefault()
       false
 
     $(window).on 'popstate', (ev) ->
-      router.route ev.target.href
+      router.route ev.originalEvent.state.url
