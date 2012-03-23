@@ -1,20 +1,14 @@
-models = require 'models/models'
+MediaController = require 'controllers/MediaController'
 
 class PageController
-  constructor: ->
-    @init()
+  constructor: (@el = $(document.body)) ->
+    @el.html (require "views/pageLayout")(this)
 
-  render: (view, root) ->
-    $(root).html (require "views/#{view}")(this)
+  index: (params) =>
+    mediaController = new MediaController(@el.find('#media'))
+    mediaController.feeds(params)
 
-  init: ->
-    @render 'pageLayout', document.body
-
-  index: (params) ->
-    models.Media.feed
-      success: (@media, @attr) =>
-        console.log @media
-        @render 'media', $('#feed')
-
+  user: (params) =>
+    console.log params
 
 module.exports = PageController
