@@ -1,12 +1,13 @@
 utils = require 'lib/utils'
 confs = require 'confs'
 router = new (require 'router')()
-pageController = new (require 'controllers/PageController')()
+pageController = new (require 'controllers/page_controller')()
 history = window.history
 root = exports ? this
 
 router.add '/', pageController.index
 router.add '/user/:id', pageController.user
+router.add '/media/:id/info', pageController.mediaInfo
 
 module.exports = App =
   init: ->
@@ -24,4 +25,5 @@ module.exports = App =
       false
 
     $(window).on 'popstate', (ev) ->
-      router.route ev.originalEvent.state.url
+      if ev.originalEvent.state
+        router.route ev.originalEvent.state.url
