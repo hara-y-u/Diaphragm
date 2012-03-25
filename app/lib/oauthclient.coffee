@@ -15,12 +15,15 @@ class OAuthClient
       unless accessToken
         location.href = utils.makeURL @authInfo
 
+  accessToken: () ->
+    accessToken
+
   request: (settings, noAuth) ->
     settings = $.extend true, settings,
       dataType: 'jsonp'
     unless noAuth
       settings.data = $.extend settings.data,
-        access_token: accessToken
+        access_token: @accessToken()
     $.ajax settings
 
 module.exports = OAuthClient

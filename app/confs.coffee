@@ -6,6 +6,10 @@ module.exports = confs =
       client_id: "59f22efc72bb499eb00b125d6d58e36d"
       redirect_uri: location.href
       response_type: "token"
+    hash: "request_url=/user/12"
+
+  api:
+    baseURL: "https://api.instagram.com/v1"
 
   # These are used to generate Models.
   models:

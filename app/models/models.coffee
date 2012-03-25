@@ -1,52 +1,75 @@
 confs = require 'confs'
-client = new (require 'lib/OAuthClient') confs.auth
-utils = require 'lib/utils'
+base = confs.api.baseURL
+oauthclient = new (require 'lib/oauthclient')(confs.auth)
 
-class ModelsGenerator
-  constructor: (settings) ->
-    @models = {}
-    @generate(settings)
+# Override Backbone.sync
+sync = (method, model, options = {}) ->
+  Backbone.sync method, model, _.extend
+    data:
+      access_token: oauthclient.accessToken()
+    dataType: 'jsonp'
+    , options
 
-  generate: (settings) ->
-    _baseURL = settings.baseURL
-    delete settings.baseURL
-    # self = this
+class ModelForAPI extends Backbone.Model
+  sync: sync
 
-    # Make Models
-    for model, methods of settings
-      do (model, methods) =>
-        @models[model] = class Model
-          baseURL = _baseURL
+class Media extends Backbone.Model
+  urlRoot: base + '/media'
 
-          constructor: (data) ->
-            $.extend true, @, data
-            @baseURL = _baseURL
+class User extends Backbone.Model
+  urlRoot: base + '/users'
 
-          # Define Methods
-          for method, path of methods
-            do (method, path) =>
-              Model[method] = (settings) ->
-                if path[0] == '!'
-                  noAuth = true
-                  path = path.substring 1
-                url = utils.makeURL
-                  baseURL: baseURL
-                  path: path
-                  replacers: settings.options
-                client.request
-                  url: url
-                  data: settings.params
-                  success: (res) ->
-                    attr = {}
-                    for key, val of res
-                      attr[key] = val if key isnt 'data'
-                    settings.success res.data, attr
-                  error: settings.error
-                  , noAuth
 
-  exportTo: (root) ->
-    for name, model of @models
-      root[name] = model
+class CollectionForAPI extends Backbone.Collection
+  # url: 'https://api.instagram.com/v1/users/self/feed',
+  sync: sync
+  parse: (res) ->
+    this.additional ={}
+    for key,val of res
+      if key isnt 'data'
+        this.additional[key] = val
+    res.data
 
-mg = new ModelsGenerator confs.models
-mg.exportTo module.exports
+  fetchNext: (options) ->
+    this.fetch _.extend
+        url: this.additional.pagination.next_url
+        add: true
+      , options
+
+class UserSpecificCollection extends CollectionForAPI
+  initialize: (models, options = {}) ->
+    @userId = if options.userId then options.userId else 'self'
+
+class MediaFeed extends UserSpecificCollection
+  model: Media
+  url: ->
+    base + "/users/#{@userId}/feed"
+
+class LikedMedia extends UserSpecificCollection
+  model: Media
+  url: ->
+    base + "/users/#{@userId}/liked"
+
+class RecentMedia extends UserSpecificCollection
+  model: Media
+  url: ->
+    base + "/users/#{@userId}/media/recent"
+
+class FollowingUsers extends UserSpecificCollection
+  model: User
+  url: ->
+    base + "/users/#{@userId}/follows"
+
+class FollowedUsers extends UserSpecificCollection
+  model: User
+  url: ->
+    base + "/users/#{@userId}/followed-by"
+
+module.exports =
+  Media: Media
+  User: User
+  MediaFeed: MediaFeed
+  LikedMedia: LikedMedia
+  RecentMedia: RecentMedia
+  FollowingUsers: FollowingUsers
+  FollowedUsers: FollowedUsers
