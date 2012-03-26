@@ -1,7 +1,6 @@
 utils = require 'lib/utils'
 confs = require 'confs'
-models = require 'models/models'
-MediaView = require 'views/mediaview'
+AppView = require 'views/appview'
 # router = new (require 'router')()
 # history = window.history
 # root = exports ? this
@@ -17,10 +16,8 @@ class Router extends Backbone.Router
     "media/:id/info":    "mediaInfo"  # /media/12/info
 
   index: () ->
-    feed = new models.MediaFeed
-    new MediaView el: $('#media'), collection: feed
-    feed.fetch()
-    console.log feed
+    console.log 'index'
+    new AppView
 
   mediaInfo: (id) ->
     console.log 'media-info'
@@ -28,9 +25,18 @@ class Router extends Backbone.Router
 
 module.exports = App =
   init: ->
-    new Router
-    Backbone.history.start
-      pushState: true
+    router = new Router
+    # ルートでないパスへのURL指定。サーバでindex.htmlが返せればよいが、そうでない場合はhashchangeなどでの対応が必須
+    Backbone.history.start()
+
+    url = utils.parseUrl location.href
+    fragment = utils.makeUrl
+      path: url.path
+      params: url.params
+
+    router.navigate fragment,
+      trigger: true
+      replace: true
 
     # router.route location.href
     # history.replaceState
@@ -38,7 +44,7 @@ module.exports = App =
     #   document.title, location.href
 
     # $('a').live 'click', (ev) ->
-    #   router.route ev.target.href #modify title here?
+    #   #router.route ev.target.href #modify title here?
     #   history.pushState
     #     url: ev.target.href
     #     document.title, ev.target.href

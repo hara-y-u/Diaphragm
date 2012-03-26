@@ -9,11 +9,11 @@ class OAuthClient
 
   authenticate: () ->
     unless accessToken
-      match = utils.parseURL(location.href).hash
+      match = utils.parseUrl(location.href).hash
         .match /access_token=([^\#\/\?\&\;]+)/
       accessToken = if match then match[1]
       unless accessToken
-        location.href = utils.makeURL @authInfo
+        location.href = utils.makeUrl @authInfo
 
   accessToken: () ->
     accessToken

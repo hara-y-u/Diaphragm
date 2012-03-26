@@ -3,7 +3,7 @@ module.exports = utils =
     str.toString().replace /\{[^\}]+\}/g, (str, p1, p2, offset, s) ->
       options[str.match(/\{([^\}]+)\}/)[1]]
 
-  makeURL: (options) ->
+  makeUrl: (options) ->
     s = baseURL:'', path: '', params: {}, hash: '', replacers: {}
     $.extend true, s, options
 
@@ -20,7 +20,7 @@ module.exports = utils =
 
     extract(s.baseURL + s.path) + _params + extract(s.hash)
 
-  parseURL: (url) ->
+  parseUrl: (url) ->
     # From http://snipplr.com/view.php?codeview&id=12659
     a = document.createElement('a')
     a.href = url
