@@ -1,0 +1,12 @@
+if user.profile_picture
+  li.profile-picture: img(src= user.profile_picture)
+if user.username
+  li.username: a(href= '#/users/#{user.id}')= user.username
+if user.full_name
+  li.full-name= user.full_name
+if user.bio
+  li.bio= user.bio
+// if id
+//   li.user-page: a(href= '#/users/#{id}') profile
+if user.website
+  li.website: a(href= user.website, target='_blank')= user.website

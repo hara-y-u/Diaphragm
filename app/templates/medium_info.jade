@@ -1,0 +1,24 @@
+- m = medium
+
+.media-info
+  ul.tags
+    each tag in m.tags
+      li= tag
+  .filter= m.filter
+  .liked= m.user_has_liked.toString()
+  ul.caption
+    li.created_time= m.caption.created_time
+    li.id= m.caption.id
+    li.text= m.caption.text
+  ul.user!= require('templates/user')({user: m.user})
+  .likes
+    .count ♥ #{m.likes.count}
+    each like in m.likes.data
+      ul!= require('templates/user')({user: like})
+  .comments
+    .count #{m.comments.count} m.comments
+    each comment in m.comments.data
+      ul
+        != require('templates/user')({user: comment.from})
+        li.created_time= comment.created_time
+        li.text= comment.text

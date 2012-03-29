@@ -1,8 +1,8 @@
-//.media(id='#{medium.id}')
-img(src= images.standard_resolution.url)
+- m = medium
+
+img(src= m.images.standard_resolution.url)
+
 .actions
-  a(href= '/media/#{id}/info') i
-  span.like-this ♥
-    // .user
-    //   user = medium.user
-    //   include user
+  a.view-info.iconic.info
+  a.like-this.iconic.heart
+

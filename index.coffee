@@ -1,7 +1,9 @@
-require('coffee-script')
-fs = require('fs')
-stitch  = require('stitch')
-express = require('express')
+require 'coffee-script'
+fs      = require 'fs'
+stitch  = require 'stitch'
+express = require 'express'
+stylus  = require 'stylus'
+nib     = require 'nib'
 argv    = process.argv.slice(2)
 
 stitch.compilers.jade = (module, filename) ->
@@ -22,6 +24,10 @@ package = stitch.createPackage(
   # ベースとなるライブラリを指定する
   dependencies: [
     __dirname + '/lib/jquery-1.7.1.js'
+    __dirname + '/lib/jquery.fancybox.pack.js'
+    __dirname + '/lib/jquery.mousewheel-3.0.6.pack.js'
+    __dirname + '/lib/underscore.js'
+    __dirname + '/lib/backbone.js'
     __dirname + '/lib/runtime.min.js' #jade runtime for client
   ]
 )
@@ -31,7 +37,13 @@ app = express.createServer()
 app.configure ->
   app.set 'views', __dirname + '/views'
   app.set 'view engine', 'jade'
-  app.use require('stylus').middleware( src: __dirname + '/public' )
+  app.use stylus.middleware
+    src: __dirname + '/public'
+    compile: (str, path) ->
+      stylus(str)
+        .set('filename', path)
+        .set('compress', true)
+        .use(nib()).import('nib')
   app.use app.router
   app.use express.static(__dirname + '/public')
   app.get '/application.js', package.createServer()

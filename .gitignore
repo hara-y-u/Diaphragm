@@ -1,5 +1,8 @@
-*.js
+index.js
+app/*.js
+app/*/*.js
 *.css
 *.html
 *.DS_Store
 node_modules
+trash
