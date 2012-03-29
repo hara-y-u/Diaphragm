@@ -48,7 +48,7 @@ class MediaFeed extends UserSpecificCollection
 class LikedMedia extends UserSpecificCollection
   model: Media
   url: ->
-    base + "/users/#{@userId}/liked"
+    base + "/users/#{@userId}/media/liked"
 
 class RecentMedia extends UserSpecificCollection
   model: Media
