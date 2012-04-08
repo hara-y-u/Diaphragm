@@ -26,6 +26,7 @@ package = stitch.createPackage(
     __dirname + '/lib/jquery-1.7.1.js'
     __dirname + '/lib/jquery.fancybox.pack.js'
     __dirname + '/lib/jquery.mousewheel-3.0.6.pack.js'
+    __dirname + '/lib/jquery.asciimation-0.2.0.js'
     __dirname + '/lib/underscore.js'
     __dirname + '/lib/backbone.js'
     __dirname + '/lib/runtime.min.js' #jade runtime for client
