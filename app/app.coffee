@@ -10,18 +10,20 @@ AppView = require 'views/appview'
 # router.add '/user/:id', pageController.user
 # router.add '/media/:id/info', pageController.mediaInfo
 
+appview = new AppView el: $(document.body)
+
 class Router extends Backbone.Router
   routes:
-    "":                 "index"
-    "media/:id/info":    "mediaInfo"  # /media/12/info
+    "": "index"
+    "likes/": "likes"
 
-  index: () ->
+  index: ->
     console.log 'index'
-    new AppView
+    appview.index()
 
-  mediaInfo: (id) ->
-    console.log 'media-info'
-
+  likes: ->
+    console.log 'likes'
+    appview.likes()
 
 module.exports = App =
   init: ->
