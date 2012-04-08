@@ -23,16 +23,20 @@ class User extends Backbone.Model
 class CollectionForAPI extends Backbone.Collection
   # url: 'https://api.instagram.com/v1/users/self/feed',
   sync: sync
-  parse: (res) ->
+  parse: (res) =>
     this.additional ={}
     for key,val of res
       if key isnt 'data'
-        this.additional[key] = val
+        @additional[key] = val
     res.data
 
-  fetchNext: (options) ->
+  hasNext: () =>
+    #console.log @additional.pagination.next_url
+    @additional.pagination.hasOwnProperty('next_url')
+
+  fetchNext: (options) =>
     this.fetch _.extend
-        url: this.additional.pagination.next_url
+        url: @additional.pagination.next_url
         add: true
       , options
 
