@@ -4,5 +4,7 @@ img(src= m.images.standard_resolution.url)
 
 .actions
   a.view-info.iconic.info
-  a.like-this.iconic.heart
-
+  if m.user_has_liked === true
+    a.like-this.iconic.heart.liked
+  else
+    a.like-this.iconic.heart

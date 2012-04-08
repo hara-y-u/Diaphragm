@@ -26,7 +26,6 @@ class MediumView extends Backbone.View
         closeEffect: 'none'
         afterShow: ->
           # Prevent main view from scroll.
-          console.log this
           $inner = $('.fancybox-inner')
           $inner.on 'mousewheel', (e, d) ->
             height = $inner.height()
@@ -36,23 +35,19 @@ class MediumView extends Backbone.View
               e.preventDefault()
         afterClose: ->
           $('.fancybox-inner').off 'mousewheel'
-
     @el
 
 
 module.exports = class MediaView extends Backbone.View
   events:
-    'click .controlls #fetch-next': 'fetchNext'
+    'click .controlls .fetch-next': 'fetchNext'
+
+  template: require 'templates/media'
 
   initialize: ->
     @collection.bind 'add', @addOne
     @collection.bind 'reset', @addAll
     @collection.bind 'all', @render
-    $(@el)
-      .append($('<div class="content">'))
-      .append($('<div class="controlls"><a id="fetch-next">more</a></div>'))
-    # At first, hide.
-    @$('#fetch-next').hide()
 
   render: =>
 
@@ -60,12 +55,38 @@ module.exports = class MediaView extends Backbone.View
     view = new MediumView model: medium
     @$('.content').append(view.render())
 
-  addAll: =>
-    @collection.each @addOne
-    if @collection.additional.pagination.next_max_id
-      @$('.controlls #fetch-next').show()
+  toggleFetchNext: (bool) =>
+    if bool
+      @$('.controlls .fetch-next').show()
     else
-      @$('.controlls #fetch-next').hide()
+      @$('.controlls .fetch-next').hide()
+
+  toggleLoading: (bool) =>
+    $loading = @$('.controlls .loading-next')
+    if bool
+      $loading.show()
+      $loading.find('.loading').asciimation('start');
+    else
+      $loading.find('.loading').asciimation('stop');
+      $loading.hide()
+
+  hasNext: () =>
+    @collection.hasNext()
+
+  addAll: =>
+    # Called only after first fetching.
+    $(@el).html @template()
+    # At first, hide 'more'
+    @toggleFetchNext(false)
+    @toggleLoading(false)
+    @collection.each @addOne
+    @toggleFetchNext @hasNext()
 
   fetchNext: =>
-    @collection.fetchNext()
+    @toggleFetchNext(false)
+    @toggleLoading(true)
+    @collection.fetchNext
+      success: () =>
+        @toggleLoading(false)
+        @toggleFetchNext @hasNext()
+

@@ -6,10 +6,11 @@
       li= tag
   .filter= m.filter
   .liked= m.user_has_liked.toString()
-  ul.caption
-    li.created_time= m.caption.created_time
-    li.id= m.caption.id
-    li.text= m.caption.text
+  if m.caption
+    ul.caption
+      li.created_time= m.caption.created_time
+      li.id= m.caption.id
+      li.text= m.caption.text
   ul.user!= require('templates/user')({user: m.user})
   .likes
     .count ♥ #{m.likes.count}

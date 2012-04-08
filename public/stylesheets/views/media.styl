@@ -3,24 +3,29 @@ white(alpha)
 
 #media
   background-color white(1)
-  width 600px
-  min-width 600px
-  height: 100%
+  width 612px
+  min-width 612px
+  height 100%
   margin 0 auto
   padding 6rem 0
   text-align center
   box-shadow 0 0 50px 50px white(1)
 
-#media .content > div
-  margin-bottom 7rem
+  .content
 
-#media .content .actions
-  text-align right
-  font-size 1.3rem
+    > div
+      margin-bottom 7rem
 
-#media .content .actions a
-  display inline-block
-  margin 6px 3px
-  width 1em
-  text-align center
-  //background-color green
+    .actions
+      text-align right
+      font-size 1.3rem
+
+      a
+        display inline-block
+        margin 6px 6px
+        width 1.2rem
+        //text-align center
+        //border-radius .3rem
+    
+      a.like-this.liked
+        background-color pink

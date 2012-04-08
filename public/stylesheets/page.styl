@@ -1,8 +1,24 @@
 global-reset()
 
+base-color = #AAA
+
 body
   background-color #fff
-  font-family arial sans-serif
+  font-family serif
+  font-size 1.3rem
+  letter-spacing .07rem
+  color base-color
 
-.controlls, .actions
-  color #999
+  #global-menu
+    float right
+    margin 10px
+
+    .delim
+      margin 5px
+
+a
+  color lighten(base-color, 10)
+  text-decoration none
+
+  :visited
+    color lighten(base-color, 20)
