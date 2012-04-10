@@ -1,5 +1,10 @@
 class MediumView extends Backbone.View
   class: 'medium'
+
+  events:
+    'click .actions .view-info': 'viewInfo'
+    #'click .actions .like-this': 'likeThis'
+
   template: require 'templates/medium'
   infoTemplate: require 'templates/medium_info'
 
@@ -13,29 +18,35 @@ class MediumView extends Backbone.View
 
     $(@el).addClass(@class).html @html
 
-    @$('.actions .view-info').on 'click', =>
-      $.fancybox
-        content: @infoHtml
-        maxWidth: 700
-        maxHetght: 600
-        width: '70%'
-        height: '80%'
-        autoSize: false
-        closeClick: false
-        openEffect: 'none'
-        closeEffect: 'none'
-        afterShow: ->
-          # Prevent main view from scroll.
-          $inner = $('.fancybox-inner')
-          $inner.on 'mousewheel', (e, d) ->
-            height = $inner.height()
-            scrollHeight = $inner.get(0).scrollHeight
-            if (@scrollTop is (scrollHeight - height) and d < 0) or (this.scrollTop is 0 and d > 0)
-              #console.log 'prevent scroll', height, scrollHeight
-              e.preventDefault()
-        afterClose: ->
-          $('.fancybox-inner').off 'mousewheel'
     @el
+
+  viewInfo: =>
+    $.fancybox
+      content: @infoHtml
+      maxWidth: 700
+      maxHetght: 600
+      width: '70%'
+      height: '80%'
+      autoSize: false
+      closeClick: false
+      openEffect: 'none'
+      closeEffect: 'none'
+      afterShow: ->
+        # Prevent main view from scroll.
+        $inner = $('.fancybox-inner')
+        $inner.on 'mousewheel', (e, d) ->
+          height = $inner.height()
+          scrollHeight = $inner.get(0).scrollHeight
+          if (@scrollTop is (scrollHeight - height) and d < 0) or (this.scrollTop is 0 and d > 0)
+            #console.log 'prevent scroll', height, scrollHeight
+            e.preventDefault()
+      afterClose: ->
+        $('.fancybox-inner').off 'mousewheel'
+
+  likeThis: =>
+    @model.like (err) =>
+      # 自分のMediaでテストしたいので自分のタイムラインが表示できるまで我慢
+      console.log err
 
 
 module.exports = class MediaView extends Backbone.View
