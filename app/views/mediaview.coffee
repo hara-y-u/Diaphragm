@@ -86,7 +86,7 @@ module.exports = class MediaView extends Backbone.View
 
   addAll: =>
     # Called only after first fetching.
-    $(@el).html @template()
+    $(@el).html @template(media: @collection.toJSON())
     # At first, hide 'more'
     @toggleFetchNext(false)
     @toggleLoading(false)

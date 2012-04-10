@@ -16,6 +16,7 @@ class Router extends Backbone.Router
   routes:
     "": "index"
     "likes/": "likes"
+    "users/:id": "user"
 
   index: ->
     console.log 'index'
@@ -24,6 +25,10 @@ class Router extends Backbone.Router
   likes: ->
     console.log 'likes'
     appview.likes()
+
+  user: (id) ->
+    console.log 'user', id
+    appview.user id
 
 module.exports = App =
   init: ->

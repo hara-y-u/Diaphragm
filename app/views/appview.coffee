@@ -1,5 +1,6 @@
 models = require 'models/models'
 MediaView = require 'views/mediaview'
+RecentMediaView = require 'views/recentmediaview'
 
 module.exports = class AppView extends Backbone.View
   template: require 'templates/app'
@@ -28,3 +29,15 @@ module.exports = class AppView extends Backbone.View
 
     @likedMedia.fetch()
     console.log 'liked media', @likedMedia
+
+  user: (id) ->
+    @$('#media > div').hide()
+    @$('#media #user').show()
+    $.fancybox.close()
+
+    if not @recentMedia or @recentMedia.userId isnt id
+      @recentMedia = new models.RecentMedia [], userId: id
+      new RecentMediaView el: @$('#media #user'), collection: @recentMedia
+
+    @recentMedia.fetch()
+    console.log 'recent media', @recentMedia
