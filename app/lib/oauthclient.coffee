@@ -19,11 +19,11 @@ class OAuthClient
     accessToken
 
   request: (settings, noAuth) ->
-    settings = $.extend true, settings,
-      dataType: 'jsonp'
+    settings = $.extend true, dataType: 'jsonp', settings
     unless noAuth
-      settings.data = $.extend settings.data,
-        access_token: @accessToken()
+      settings.data = $.extend
+       access_token: @accessToken()
+      , settings.data
     $.ajax settings
 
 module.exports = OAuthClient

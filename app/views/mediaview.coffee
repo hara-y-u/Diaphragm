@@ -3,7 +3,7 @@ class MediumView extends Backbone.View
 
   events:
     'click .actions .view-info': 'viewInfo'
-    #'click .actions .like-this': 'likeThis'
+    'click .actions .like-this': 'toggleLiked'
 
   template: require 'templates/medium'
   infoTemplate: require 'templates/medium_info'
@@ -43,10 +43,14 @@ class MediumView extends Backbone.View
       afterClose: ->
         $('.fancybox-inner').off 'mousewheel'
 
-  likeThis: =>
-    @model.like (err) =>
-      # 自分のMediaでテストしたいので自分のタイムラインが表示できるまで我慢
-      console.log err
+  toggleLiked: =>
+    isLiked = @$('.actions .like-this').hasClass('liked')
+    @model.setLiked not isLiked, (err) =>
+      unless err
+        if isLiked
+          @$('.actions .like-this').removeClass('liked')
+        else
+          @$('.actions .like-this').addClass('liked')
 
 
 module.exports = class MediaView extends Backbone.View

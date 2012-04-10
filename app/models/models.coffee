@@ -16,6 +16,23 @@ class ModelForAPI extends Backbone.Model
 class Media extends Backbone.Model
   urlRoot: base + '/media'
 
+  setLiked: (bool, fn) =>
+    # unless @waitingResponse
+    #   @waitingResponse = true
+      oauthclient.request
+        dataType: '*/*'
+        type: if bool then 'POST' else 'DELETE'
+        url: base + '/media/' + this.id + '/likes/'
+        # Return error = false always, because cross-domain POST fails
+        # because of absence of Access-Control-Allow-Origin header in Response.
+        complete: () ->
+          fn false
+    #       @waitingResponse = false
+    # else
+    #   console.log 'Media::setLiked - Last request not completed.'
+    #   fn true
+
+
 class User extends Backbone.Model
   urlRoot: base + '/users'
 
