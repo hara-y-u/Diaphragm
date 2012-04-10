@@ -35,9 +35,12 @@ module.exports = class AppView extends Backbone.View
     @$('#media #user').show()
     $.fancybox.close()
 
-    if not @recentMedia or @recentMedia.userId isnt id
-      @recentMedia = new models.RecentMedia [], userId: id
+    unless @recentMedia
+      @recentMedia = new models.RecentMedia
       new RecentMediaView el: @$('#media #user'), collection: @recentMedia
+
+    if @recentMedia.userId isnt id
+      @recentMedia.setUserId id
 
     @recentMedia.fetch()
     console.log 'recent media', @recentMedia

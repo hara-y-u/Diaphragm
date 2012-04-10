@@ -61,6 +61,12 @@ class UserSpecificCollection extends CollectionForAPI
   initialize: (models, options = {}) ->
     @userId = if options.userId then options.userId else 'self'
 
+  setUserId: (id) =>
+    if id
+      @userId = id
+    else
+      @userId
+
 class MediaFeed extends UserSpecificCollection
   model: Media
   url: ->
