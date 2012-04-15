@@ -5,7 +5,6 @@ AppView = require 'views/appview'
 # history = window.history
 # root = exports ? this
 
-
 # router.add '/', pageController.index
 # router.add '/user/:id', pageController.user
 # router.add '/media/:id/info', pageController.mediaInfo
