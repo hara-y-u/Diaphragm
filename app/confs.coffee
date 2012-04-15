@@ -4,7 +4,7 @@ module.exports = confs =
     path: "/oauth/authorize/"
     params:
       client_id: "59f22efc72bb499eb00b125d6d58e36d"
-      redirect_uri: location.href
+      redirect_uri: window.self.location.href
       response_type: "token"
       scope: "likes"
 
