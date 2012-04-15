@@ -1,5 +1,6 @@
 {
-  "name": "ig-sample",
+  "name": "Diaphragm",
+  "description": "An Instagram App for keeping focus on photos.",
   "version": "0.0.1",
   "dependencies": { 
     "coffee-script": "~1.2.0",
