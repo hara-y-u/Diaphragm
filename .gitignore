@@ -6,3 +6,4 @@ app/*/*.js
 *.DS_Store
 node_modules
 trash
+build
